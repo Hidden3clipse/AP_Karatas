@@ -4,44 +4,58 @@ from matplotlib import pyplot as plt  # Importiert Matplotlib für Diagramme
 from sklearn.cluster import KMeans  # Importiert KMeans für Clustering
 from yellowbrick.cluster import KElbowVisualizer  # Importiert KElbowVisualizer zur Bestimmung der optimalen Cluster-Anzahl
 
-# 1. Daten einlesen
+# 1. Daten einlesen:
+# Laden Sie den Datensatz winequality-red.csv in einen Pandas DataFrame.
 df = pd.read_csv("csv_dateien/winequality-red.csv", delimiter=';')  # CSV-Datei einlesen und Semikolon als Trennzeichen nutzen
 
-# 2. Datensatz erkunden
+# 2. Datensatz erkunden:
+# Zeigen Sie die ersten und die letzten 5 Zeilen des DataFrames an
 print("\nErste 5 Zeilen des DataFrames:")
 print(df.head())  # Zeigt die ersten 5 Zeilen
 
 print("\nLetzte 5 Zeilen des DataFrames:")
 print(df.tail())  # Zeigt die letzten 5 Zeilen
 
-# 3. Zusammenfassung des DataFrames
+# 3. Zusammenfassung:
+# Erhalten Sie eine Übersicht über die Spaltennamen, Datentypen und Anzahl der Nicht-Null-Werte.
+# Zeigen Sie zusätzlich statistische Kennwerte aller numerischen Spalten an.
 print("\nAllgemeine Informationen zum DataFrame:")
 print(df.info())  # Zeigt Infos über Datentypen und fehlende Werte
 
 print("\nStatistische Übersicht des DataFrames:")
 print(df.describe())  # Zeigt statistische Kennzahlen wie Mittelwert, Standardabweichung etc.
 
-# 4. Spalten auswählen
+# 4. Spalten auswählen:
+# Wählen Sie die Spalten alcohol und pH aus und zeigen Sie die ersten 10 Zeilen an.
 selected_columns = df[['alcohol', 'pH']]  # Wählt die Spalten 'alcohol' und 'pH' aus
 print("\nErste 10 Zeilen der ausgewählten Spalten (Alkohol & pH):")
 print(selected_columns.head(10))  # Zeigt die ersten 10 Zeilen dieser Spalten
 
-# 5. Bedingte Auswahl (quality genau 8)
+# 5. Bedingte Auswahl:
+# Filtern Sie die Daten, um nur die Zeilen anzuzeigen, bei denen der quality-Wert genau 8 ist.
 filtered_df_8 = df[df['quality'] == 8]  # Filtert Zeilen mit Qualitätswert 8
 print("\nZeilen mit Qualität genau 8:")
 print(filtered_df_8)
 
-# 6. Mehrere Bedingungen (Alkoholgehalt > 12.5 und Qualität >= 7)
+# 6. Mehrere Bedingungen:
+# Finden Sie alle Einträge, bei denen der alcohol-Wert größer als 12.5 ist und die quality mindestens 7 beträgt.
 filtered_df = df[(df['alcohol'] > 12.5) & (df['quality'] >= 7)]  # Wählt Weine mit hohem Alkoholgehalt und guter Qualität
 print("\nZeilen mit Alkoholgehalt > 12.5 und Qualität >= 7:")
 print(filtered_df)
 
-# 7. Neue Spalte hinzufügen (Dichte / Alkoholgehalt)
+# 7. Neue Spalte hinzufügen:
+# Berechnen Sie die Kennzahl density_alcohol_ratio (Dichte geteilt durch Alkoholgehalt) und fügen Sie diese als neue Spalte hinzu.
 df['density_alcohol_ratio'] = df['density'] / df['alcohol']  # Erstellt eine neue Spalte als Verhältnis von Dichte zu Alkohol
 print("\nErste Zeilen mit neuer Spalte (Dichte/Alkoholgehalt):")
 print(df.head())
 
-# 8. Werte in der quality-Spalte ändern
+# 8. Werte ändern:
+# Ersetzen Sie die Werte in der Spalte quality durch folgende Kategorien:
+# Qualität 3 → "sehr schlecht"
+# Qualität 4 → "schlecht"
+# Qualität 5 → "okay"
+# Qualität 6 → "gut"
+# Qualität 7 oder höher → "sehr gut"
 def quality_label(q):  # Funktion zur Umwandlung numerischer Qualität in Textlabels
     if q == 3:
         return "sehr schlecht"
@@ -57,16 +71,19 @@ df['quality_label'] = df['quality'].apply(quality_label)  # Wendet die Funktion 
 print("\nZuordnung der Qualitätswerte:")
 print(df[['quality', 'quality_label']].head())
 
-# 9. Entfernen der Zeilen mit pH-Wert kleiner als 3.0
+# 9. Zeilen löschen:
+# Entfernen Sie alle Zeilen, in denen der pH-Wert kleiner als 3.0 ist.
 df = df[df['pH'] >= 3.0]  # Entfernt alle Zeilen mit pH-Werten unter 3.0
 print("\nErste Zeilen nach Entfernen von pH-Werten < 3.0:")
 print(df.head())
 
-# 10. Spaltenüberschriften ausgeben
+# 10. Spaltenüberschriften anzeigen:
+# Geben Sie die aktuellen Spaltennamen mit df.columns aus.
 print("\nSpaltenüberschriften des DataFrames:")
 print(df.columns)
 
-# 11. Spaltenüberschriften mit deutschen Bezeichnungen ersetzen
+# 11. Spaltenüberschriften ersetzen:
+# Ersetzen Sie die Spaltennamen durch deutsche Bezeichnungen
 deutsch_columns = {  # Dictionary zur Umbenennung der Spalten
     'fixed acidity': 'fester Säuregehalt',
     'volatile acidity': 'flüchtiger Säuregehalt',
@@ -85,7 +102,8 @@ df.rename(columns=deutsch_columns, inplace=True)  # Wendet die Umbenennung an
 print("\nErste Zeilen nach Umbenennung der Spalten:")
 print(df.head())
 
-# 12. Visualisierung (Scatterplot von Alkohol vs. Qualität)
+# 12. Seaborn Scatterplot:
+# Erstellen Sie einen Scatterplot mit Seaborn, der die Beziehung zwischen Alkohol und Qualität visualisiert.
 print("\nErstelle Scatterplot für Alkohol vs. Qualität...")
 sns.scatterplot(x=df['Alkohol'], y=df['Qualität'])  # Erstellt einen Streudiagramm für Alkohol und Qualität
 plt.xlabel("Alkoholgehalt")
@@ -93,7 +111,9 @@ plt.ylabel("Qualität")
 plt.title("Alkohol vs. Qualität")
 plt.show()
 
-# 13. KMeans Qualität
+# 13. KMeans-Clustering:
+# Entfernen Sie die Spalte Qualität und clustern Sie den Datensatz mithilfe von KMeans.
+# Fügen Sie die Cluster-Zugehörigkeit als neue Spalte cluster hinzu
 print("\n#13 KMeans Qualität")
 
 # Daten ohne Zielspalte erzeugen
