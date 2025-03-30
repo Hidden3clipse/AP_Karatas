@@ -30,4 +30,4 @@ data_new = pd.concat([data, pd.DataFrame(pred, columns=['label'])], axis=1)
 print(data_new)
 
 # Speichern in neue CSV Datei
-data_new.to_csv("./data_new.csv")
+data_new.to_csv("csv_datein/data_new.csv")
