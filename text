@@ -1,0 +1,23 @@
+import numpy as np
+
+# 1. Erstellen eines 1D-Arrays
+array1 = np.array([5, 10, 15, 20, 25])
+print("1D-Array:", array1)
+
+# 2. Array erstellen und 10 addieren
+array2 = np.array([1, 2, 3, 4, 5]) + 10
+print("Array nach Addition:", array2)
+
+# 3. Erstellen einer 2x2-Matrix
+matrix = np.array([[1, 2], [3, 4]])
+print("2x2-Matrix:\n", matrix)
+
+# 4. Mittelwert berechnen
+array3 = np.array([12, 15, 18, 21, 24])
+mittelwert = np.mean(array3)
+print("Mittelwert:", mittelwert)
+
+# 5. Erster und letzter Wert eines Arrays
+array4 = np.array([5, 10, 15, 20, 25])
+print("Erstes Element:", array4[0])
+print("Letztes Element:", array4[-1])
