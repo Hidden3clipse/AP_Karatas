@@ -118,4 +118,4 @@ data_new = pd.concat([df, pd.DataFrame(pred, columns=['label'])], axis=1)  # Fü
 print(data_new)
 
 # Speichern in neue CSV Datei
-data_new.to_csv("csv_dateien/data_new.csv")  # Speichert das erweiterte Dataset als CSV
+data_new.to_csv("csv_dateien/data_new.csv")  #Speichert das erweiterte Dataset als CSV
